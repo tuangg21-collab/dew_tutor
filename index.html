@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dew Tutor - เรียน AI เพื่ออนาคต</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary: #6C63FF;
+      --primary-dark: #4C46C8;
+      --secondary: #00D4FF;
+      --accent: #FF6584;
+      --bg-dark: #0A0E1A;
+      --bg-card: #111827;
+      --bg-card2: #1a2235;
+      --text: #E2E8F0;
+      --text-muted: #94A3B8;
+      --border: rgba(255,255,255,0.08);
+      --gradient: linear-gradient(135deg, #6C63FF 0%, #00D4FF 100%);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Sarabun', sans-serif;
+      background: var(--bg-dark);
+      color: var(--text);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ===== NAVBAR ===== */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 16px 0;
+      background: rgba(10,14,26,0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo {
+      font-size: 1.6rem;
+      font-weight: 800;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-decoration: none;
+    }
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+      align-items: center;
+    }
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .btn-nav {
+      background: var(--gradient);
+      color: #fff !important;
+      padding: 10px 24px;
+      border-radius: 100px;
+      font-weight: 700 !important;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .btn-nav:hover { opacity: 0.9; transform: translateY(-1px); }
+
+    /* ===== HERO ===== */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 120px 24px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 70% 40%, rgba(108,99,255,0.18) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 20% 70%, rgba(0,212,255,0.12) 0%, transparent 70%);
+    }
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+    .hero-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+      width: 100%;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(108,99,255,0.15);
+      border: 1px solid rgba(108,99,255,0.3);
+      padding: 6px 16px;
+      border-radius: 100px;
+      font-size: 0.85rem;
+      color: var(--secondary);
+      font-weight: 600;
+      margin-bottom: 24px;
+    }
+    .badge-dot {
+      width: 8px; height: 8px;
+      background: var(--secondary);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+    .hero h1 {
+      font-size: clamp(2.2rem, 4vw, 3.4rem);
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 20px;
+      letter-spacing: -1px;
+    }
+    .hero h1 .grad {
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero > .hero-inner > .hero-content > p {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      margin-bottom: 36px;
+      max-width: 480px;
+    }
+    .hero-desc {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      margin-bottom: 36px;
+      max-width: 480px;
+    }
+    .hero-btns {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--gradient);
+      color: #fff;
+      padding: 14px 32px;
+      border-radius: 100px;
+      font-size: 1rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 24px rgba(108,99,255,0.35);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(108,99,255,0.5); }
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      color: var(--text);
+      padding: 14px 32px;
+      border-radius: 100px;
+      font-size: 1rem;
+      font-weight: 600;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .btn-outline:hover { border-color: var(--primary); background: rgba(108,99,255,0.08); }
+    .hero-stats {
+      display: flex;
+      gap: 36px;
+      margin-top: 48px;
+    }
+    .stat-num {
+      font-size: 1.8rem;
+      font-weight: 800;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+    }
+    .stat-label { font-size: 0.78rem; color: var(--text-muted); margin-top: 4px; }
+
+    /* Hero Card */
+    .hero-visual { position: relative; }
+    .ai-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(108,99,255,0.3);
+      border-radius: 24px;
+      padding: 28px;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(108,99,255,0.1);
+      position: relative;
+    }
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .card-icon {
+      width: 44px; height: 44px;
+      background: var(--gradient);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+    }
+    .card-title-text { font-weight: 700; font-size: 0.95rem; }
+    .card-sub { font-size: 0.78rem; color: var(--text-muted); }
+    .online-dot {
+      width: 8px; height: 8px;
+      background: #4ADE80;
+      border-radius: 50%;
+      margin-left: auto;
+      box-shadow: 0 0 8px #4ADE80;
+    }
+    .chat { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+    .bubble {
+      padding: 11px 15px;
+      border-radius: 14px;
+      font-size: 0.87rem;
+      line-height: 1.5;
+      max-width: 85%;
+    }
+    .bubble-ai {
+      background: rgba(108,99,255,0.15);
+      border: 1px solid rgba(108,99,255,0.2);
+    }
+    .bubble-user {
+      background: var(--bg-card2);
+      border: 1px solid var(--border);
+      align-self: flex-end;
+    }
+    .typing {
+      display: flex;
+      gap: 5px;
+      padding: 12px 16px;
+      background: rgba(108,99,255,0.1);
+      border-radius: 14px;
+      width: fit-content;
+    }
+    .typing span {
+      width: 7px; height: 7px;
+      background: var(--primary);
+      border-radius: 50%;
+      animation: blink 1.4s infinite;
+    }
+    .typing span:nth-child(2) { animation-delay: 0.2s; }
+    .typing span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes blink {
+      0%, 80%, 100% { opacity: 0.3; transform: scale(0.8); }
+      40% { opacity: 1; transform: scale(1); }
+    }
+    .float-pill {
+      position: absolute;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 9px 14px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    }
+    .pill-1 { top: -18px; right: -10px; color: #4ADE80; }
+    .pill-2 { bottom: -18px; left: -10px; color: var(--secondary); }
+    .pill-dot { width: 7px; height: 7px; border-radius: 50%; }
+
+    /* ===== SECTION BASE ===== */
+    section { padding: 96px 24px; }
+    .wrap { max-width: 1200px; margin: 0 auto; }
+    .sec-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+    .sec-title {
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 800;
+      margin-bottom: 14px;
+      letter-spacing: -0.5px;
+    }
+    .sec-desc { color: var(--text-muted); font-size: 1rem; max-width: 540px; }
+    .sec-head { margin-bottom: 56px; }
+    .sec-head.center { text-align: center; }
+    .sec-head.center .sec-desc { margin: 0 auto; }
+
+    /* ===== COURSES ===== */
+    #courses { background: var(--bg-card); }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 22px;
+    }
+    .course-card {
+      background: var(--bg-dark);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+    }
+    .course-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(108,99,255,0.4);
+      box-shadow: 0 16px 48px rgba(108,99,255,0.12);
+    }
+    .course-thumb {
+      height: 156px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3.5rem;
+      position: relative;
+    }
+    .thumb-1 { background: linear-gradient(135deg, #18104e, #2d1b8e); }
+    .thumb-2 { background: linear-gradient(135deg, #0a2040, #0a4a80); }
+    .thumb-3 { background: linear-gradient(135deg, #200830, #500a80); }
+    .thumb-4 { background: linear-gradient(135deg, #082018, #0a5030); }
+    .thumb-5 { background: linear-gradient(135deg, #20100a, #60280a); }
+    .thumb-6 { background: linear-gradient(135deg, #200808, #600808); }
+    .chip-badge {
+      position: absolute;
+      top: 12px; right: 12px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 100px;
+      letter-spacing: 0.5px;
+    }
+    .chip-hot { background: #FF9500; color: #fff; }
+    .chip-new { background: var(--accent); color: #fff; }
+    .chip-free { background: #4ADE80; color: #052e0a; }
+    .course-body { padding: 22px; }
+    .tag-row { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 11px; }
+    .tag {
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 100px;
+    }
+    .tag-purple { background: rgba(108,99,255,0.15); color: #a89dff; border: 1px solid rgba(108,99,255,0.2); }
+    .tag-cyan { background: rgba(0,212,255,0.1); color: #00D4FF; border: 1px solid rgba(0,212,255,0.2); }
+    .tag-green { background: rgba(74,222,128,0.1); color: #4ADE80; border: 1px solid rgba(74,222,128,0.2); }
+    .course-name { font-size: 1rem; font-weight: 700; margin-bottom: 8px; line-height: 1.4; }
+    .course-desc-text { font-size: 0.86rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 18px; }
+    .course-foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .course-meta { display: flex; gap: 14px; }
+    .price { font-size: 1.1rem; font-weight: 800; color: var(--primary); }
+    .price-free { color: #4ADE80; }
+
+    /* ===== STEPS ===== */
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 24px;
+    }
+    .step {
+      text-align: center;
+      padding: 32px 20px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .step:hover { border-color: rgba(108,99,255,0.35); transform: translateY(-4px); }
+    .step-num {
+      width: 56px; height: 56px;
+      background: var(--gradient);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin: 0 auto 18px;
+      box-shadow: 0 8px 24px rgba(108,99,255,0.3);
+    }
+    .step h3 { font-size: 1rem; font-weight: 700; margin-bottom: 10px; }
+    .step p { font-size: 0.86rem; color: var(--text-muted); }
+
+    /* ===== INSTRUCTOR ===== */
+    #instructor { background: var(--bg-card); }
+    .instructor-wrap {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+    .instructor-photo {
+      width: 220px; height: 220px;
+      border-radius: 24px;
+      background: var(--gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 5rem;
+      flex-shrink: 0;
+      box-shadow: 0 16px 48px rgba(108,99,255,0.3);
+    }
+    .instructor-info h2 { font-size: 1.8rem; font-weight: 800; margin-bottom: 6px; }
+    .inst-role { color: var(--primary); font-weight: 600; margin-bottom: 16px; font-size: 0.95rem; }
+    .inst-bio { color: var(--text-muted); line-height: 1.8; margin-bottom: 22px; font-size: 0.95rem; }
+    .skill-chips { display: flex; gap: 9px; flex-wrap: wrap; }
+    .skill-chip {
+      background: var(--bg-dark);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 6px 14px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    /* ===== TESTIMONIALS ===== */
+    .testi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 22px;
+    }
+    .testi-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 26px;
+      transition: border-color 0.3s;
+    }
+    .testi-card:hover { border-color: rgba(108,99,255,0.3); }
+    .stars { color: #FBBF24; letter-spacing: 2px; margin-bottom: 14px; font-size: 0.9rem; }
+    .testi-text { font-size: 0.9rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 20px; }
+    .testi-author { display: flex; align-items: center; gap: 12px; }
+    .avatar {
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      background: var(--gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+    .author-name { font-weight: 700; font-size: 0.88rem; }
+    .author-role { font-size: 0.76rem; color: var(--text-muted); }
+
+    /* ===== CTA ===== */
+    #cta {
+      background: linear-gradient(135deg, rgba(108,99,255,0.12) 0%, rgba(0,212,255,0.08) 100%);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      text-align: center;
+    }
+    .cta-wrap { max-width: 640px; margin: 0 auto; }
+    .cta-wrap h2 { font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 800; margin-bottom: 14px; }
+    .cta-wrap p { color: var(--text-muted); font-size: 1rem; margin-bottom: 32px; }
+    .cta-form {
+      display: flex;
+      gap: 12px;
+      max-width: 440px;
+      margin: 0 auto;
+    }
+    .cta-input {
+      flex: 1;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 13px 22px;
+      color: var(--text);
+      font-family: 'Sarabun', sans-serif;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .cta-input:focus { border-color: var(--primary); }
+    .cta-input::placeholder { color: var(--text-muted); }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: var(--bg-card);
+      border-top: 1px solid var(--border);
+      padding: 56px 24px 28px;
+    }
+    .footer-inner { max-width: 1200px; margin: 0 auto; }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+    .footer-brand .logo-foot {
+      font-size: 1.5rem;
+      font-weight: 800;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: inline-block;
+      margin-bottom: 12px;
+    }
+    .footer-brand p { font-size: 0.86rem; color: var(--text-muted); line-height: 1.7; }
+    .footer-col h4 {
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 10px; }
+    .footer-col ul li a { color: var(--text-muted); text-decoration: none; font-size: 0.86rem; transition: color 0.2s; }
+    .footer-col ul li a:hover { color: var(--text); }
+    .footer-bottom {
+      border-top: 1px solid var(--border);
+      padding-top: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 920px) {
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-visual { display: none; }
+      .hero-btns, .hero-stats { justify-content: center; }
+      .hero-content { text-align: center; }
+      .hero-desc { margin: 0 auto 36px; }
+      .instructor-wrap { grid-template-columns: 1fr; text-align: center; }
+      .instructor-photo { margin: 0 auto; }
+      .skill-chips { justify-content: center; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 600px) {
+      .nav-links { display: none; }
+      .cta-form { flex-direction: column; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <div class="nav-inner">
+    <a class="logo" href="#">Dew.Tutor</a>
+    <ul class="nav-links">
+      <li><a href="#courses">คอร์สเรียน</a></li>
+      <li><a href="#how">วิธีเรียน</a></li>
+      <li><a href="#instructor">ผู้สอน</a></li>
+      <li><a href="#testimonials">รีวิว</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-inner">
+
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        คอร์สใหม่ปี 2025 — เปิดรับแล้ววันนี้
+      </div>
+      <h1>
+        เรียน <span class="grad">AI</span><br/>
+        ให้เก่งจริง<br/>
+        ใช้ได้จริง
+      </h1>
+      <p class="hero-desc">
+        ฝึกทักษะ AI ตั้งแต่พื้นฐานจนถึงขั้นสูง พร้อม Workshop จริง
+        โปรเจกต์จริง และ Community ที่ช่วยเหลือกัน
+      </p>
+      <div class="hero-stats">
+        <div>
+          <div class="stat-num">3,200+</div>
+          <div class="stat-label">นักเรียน</div>
+        </div>
+        <div>
+          <div class="stat-num">18</div>
+          <div class="stat-label">คอร์สเรียน</div>
+        </div>
+        <div>
+          <div class="stat-num">4.9★</div>
+          <div class="stat-label">คะแนนเฉลี่ย</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="ai-card">
+        <div class="float-pill pill-1">
+          <span class="pill-dot" style="background:#4ADE80;"></span>
+          Live Workshop
+        </div>
+        <div class="float-pill pill-2">
+          <span class="pill-dot" style="background:#00D4FF;"></span>
+          AI Certificate
+        </div>
+        <div class="card-header">
+          <div class="card-icon">&#129302;</div>
+          <div>
+            <div class="card-title-text">Dew AI Assistant</div>
+            <div class="card-sub">ถามได้ทุกเรื่อง AI</div>
+          </div>
+          <div class="online-dot"></div>
+        </div>
+        <div class="chat">
+          <div class="bubble bubble-ai">สวัสดีครับ! วันนี้อยากเรียนเรื่องอะไร? &#128218;</div>
+          <div class="bubble bubble-user">อยากเรียน Prompt Engineering ครับ</div>
+          <div class="bubble bubble-ai">เยี่ยมเลย! มาเริ่มจากพื้นฐานการเขียน Prompt ที่ดีกัน จะทำให้ AI ตอบได้ตรงใจมากขึ้น...</div>
+        </div>
+        <div class="typing">
+          <span></span><span></span><span></span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- COURSES -->
+<section id="courses">
+  <div class="wrap">
+    <div class="sec-head center">
+      <div class="sec-label">คอร์สเรียน</div>
+      <h2 class="sec-title">เรียนอะไรได้บ้าง?</h2>
+      <p class="sec-desc">คอร์สครบครัน ตั้งแต่ AI เบื้องต้น จนถึงการสร้าง AI Application เพื่อธุรกิจ</p>
+    </div>
+    <div class="grid-3">
+
+      <div class="course-card">
+        <div class="course-thumb thumb-1">
+          &#129302;
+          <span class="chip-badge chip-hot">HOT</span>
+        </div>
+        <div class="course-body">
+          <div class="tag-row">
+            <span class="tag tag-purple">เริ่มต้น</span>
+            <span class="tag tag-cyan">Prompt</span>
+          </div>
+          <div class="course-name">Prompt Engineering Masterclass</div>
+          <div class="course-desc-text">เรียนรู้การเขียน Prompt ที่ทรงพลัง สำหรับ ChatGPT, Claude และ Gemini ให้ได้ผลลัพธ์ที่ต้องการ</div>
+          <div class="course-foot">
+            <div class="course-meta">
+              <span>&#128218; 24 บท</span>
+              <span>&#9200; 8 ชม.</span>
+            </div>
+            <div class="price">฿1,490</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="course-card">
+        <div class="course-thumb thumb-2">
+          &#129504;
+          <span class="chip-badge chip-new">NEW</span>
+        </div>
+        <div class="course-body">
+          <div class="tag-row">
+            <span class="tag tag-purple">กลาง</span>
+            <span class="tag tag-purple">LLM</span>
+          </div>
+          <div class="course-name">Build AI App with Claude API</div>
+          <div class="course-desc-text">สร้าง AI Application ด้วย Anthropic Claude API ตั้งแต่ต้น พร้อม Deploy ใช้งานจริง</div>
+          <div class="course-foot">
+            <div class="course-meta">
+              <span>&#128218; 32 บท</span>
+              <span>&#9200; 14 ชม.</span>
+            </div>
+            <div class="price">฿2,490</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="course-card">
+        <div class="course-thumb thumb-3">
+          &#127760;
+        </div>
+        <div class="course-body">
+          <div class="tag-row">
+            <span class="tag tag-purple">สูง</span>
+            <span class="tag tag-cyan">RAG</span>
+          </div>
+          <div class="course-name">RAG & Vector Database</div>
+          <div class="course-desc-text">สร้าง AI ที่รู้จักข้อมูลขององค์กรคุณด้วย RAG, Embedding และ Vector DB</div>
+          <div class="course-foot">
+            <div class="course-meta">
+              <span>&#128218; 28 บท</span>
+              <span>&#9200; 12 ชม.</span>
+            </div>
+            <div class="price">฿2,990</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="course-card">
+        <div class="course-thumb thumb-4">
+          &#127381;
+          <span class="chip-badge chip-new">NEW</span>
+        </div>
+        <div class="course-body">
+          <div class="tag-row">
+            <span class="tag tag-purple">กลาง</span>
+            <span class="tag tag-green">n8n</span>
+          </div>
+          <div class="course-name">AI Automation ด้วย n8n</div>
+          <div class="course-desc-text">สร้าง Workflow อัตโนมัติด้วย AI ไม่ต้องเขียน Code ช่วยประหยัดเวลาทำงานได้หลายชั่วโมงต่อวัน</div>
+          <div class="course-foot">
+            <div class="course-meta">
+              <span>&#128218; 20 บท</span>
+              <span>&#9200; 10 ชม.</span>
+            </div>
+            <div class="price">฿1,990</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="course-card">
+        <div class="course-thumb thumb-5">
+          &#128736;
+        </div>
+        <div class="course-body">
+          <div class="tag-row">
+            <span class="tag tag-purple">กลาง</span>
+            <span class="tag tag-cyan">Agent</span>
+          </div>
+          <div class="course-name">AI Agent สร้าง Bot ทำงานแทนคุณ</div>
+          <div class="course-desc-text">เรียนรู้การสร้าง AI Agent ที่ทำงานได้เอง ตั้งแต่ค้นหาข้อมูลถึงส่งอีเมลอัตโนมัติ</div>
+          <div class="course-foot">
+            <div class="course-meta">
+              <span>&#128218; 22 บท</span>
+              <span>&#9200; 9 ชม.</span>
+            </div>
+            <div class="price">฿1,790</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="course-card">
+        <div class="course-thumb thumb-6">
+          &#127891;
+          <span class="chip-badge chip-free">FREE</span>
+        </div>
+        <div class="course-body">
+          <div class="tag-row">
+            <span class="tag tag-purple">เริ่มต้น</span>
+            <span class="tag tag-green">ฟรี</span>
+          </div>
+          <div class="course-name">AI สำหรับมือใหม่ — เรียนฟรี!</div>
+          <div class="course-desc-text">เริ่มต้นทำความรู้จัก AI อย่างเข้าใจ ไม่ต้องมีพื้นฐาน เรียนได้ทันที ไม่มีค่าใช้จ่าย</div>
+          <div class="course-foot">
+            <div class="course-meta">
+              <span>&#128218; 10 บท</span>
+              <span>&#9200; 3 ชม.</span>
+            </div>
+            <div class="price price-free">ฟรี!</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="wrap">
+    <div class="sec-head center">
+      <div class="sec-label">วิธีเรียน</div>
+      <h2 class="sec-title">เรียนง่าย ใช้ได้จริง</h2>
+      <p class="sec-desc">ระบบการเรียนที่ออกแบบมาเพื่อให้คุณนำไปใช้งานได้จริงในชีวิตและการทำงาน</p>
+    </div>
+    <div class="grid-4">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>เลือกคอร์ส</h3>
+        <p>เลือกคอร์สที่ตรงกับระดับและเป้าหมายของคุณ มีทั้งฟรีและมีค่าใช้จ่าย</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>เรียนตามใจ</h3>
+        <p>เรียนออนไลน์ได้ทุกที่ทุกเวลา ผ่านวิดีโอ PDF และแบบฝึกหัดที่ครบครัน</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>ทำ Workshop</h3>
+        <p>ฝึกกับโปรเจกต์จริง Workshop สด และ Assignment ที่มี Feedback ทุกชิ้น</p>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <h3>รับ Certificate</h3>
+        <p>รับประกาศนียบัตรพร้อมเข้าร่วม Community ของ Dew Tutor ที่ช่วยเหลือกัน</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INSTRUCTOR -->
+<section id="instructor">
+  <div class="wrap">
+    <div class="instructor-wrap">
+      <div class="instructor-photo">&#128104;&#8205;&#128187;</div>
+      <div class="instructor-info">
+        <div class="sec-label">ผู้สอน</div>
+        <h2>น้ำค้าง "Dew" สุริยา</h2>
+        <div class="inst-role">AI Engineer & Educator | 8+ ปีประสบการณ์</div>
+        <p class="inst-bio">
+          อดีต AI Researcher ปัจจุบันเป็น AI Consultant ให้กับองค์กรชั้นนำในไทย
+          ผ่านประสบการณ์สอนมากกว่า 3,200 คน มีความเชี่ยวชาญด้าน LLM, RAG, AI Agent
+          และ Generative AI สำหรับธุรกิจ ภารกิจหลักคือทำให้ AI เข้าใจง่ายและใช้งานได้จริงสำหรับทุกคน
+        </p>
+        <div class="skill-chips">
+          <span class="skill-chip">ChatGPT / Claude</span>
+          <span class="skill-chip">LangChain</span>
+          <span class="skill-chip">RAG & Vector DB</span>
+          <span class="skill-chip">Python</span>
+          <span class="skill-chip">AI Automation</span>
+          <span class="skill-chip">n8n</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="wrap">
+    <div class="sec-head center">
+      <div class="sec-label">รีวิวจากนักเรียน</div>
+      <h2 class="sec-title">นักเรียนพูดถึงเราอย่างไร?</h2>
+      <p class="sec-desc">กว่า 3,200 คนที่ไว้วางใจ Dew Tutor ในการเรียน AI</p>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card">
+        <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="testi-text">"คอร์ส Prompt Engineering ดีมากครับ สอนละเอียด มีตัวอย่างจริงเยอะ ทำให้เข้าใจได้ง่าย พอเรียนจบก็เอาไปใช้ที่ทำงานได้เลย ประหยัดเวลาทำงานไปได้เยอะมาก"</p>
+        <div class="testi-author">
+          <div class="avatar">ก</div>
+          <div>
+            <div class="author-name">กิตติ์ วงษ์สุวรรณ</div>
+            <div class="author-role">Marketing Manager, SCB</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="testi-text">"เรียน RAG แล้วสามารถสร้าง Chatbot ให้บริษัทได้เองเลย ครูสอนชัดมาก มีกลุ่ม LINE คอยช่วยเหลือตลอด ประทับใจมากค่ะ แนะนำเลย!"</p>
+        <div class="testi-author">
+          <div class="avatar" style="background:linear-gradient(135deg,#FF6584,#FF9500);">ป</div>
+          <div>
+            <div class="author-name">ปิยะดา ศรีสมบูรณ์</div>
+            <div class="author-role">IT Manager, PTT</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="testi-text">"ไม่มีพื้นฐาน Coding เลย แต่ก็สร้าง AI Agent ได้ครับ คอร์ส n8n ดีมาก งานที่ต้องทำซ้ำๆ ทุกวันหมดไป ประหยัดเวลาได้ 3 ชั่วโมงต่อวัน"</p>
+        <div class="testi-author">
+          <div class="avatar" style="background:linear-gradient(135deg,#4ADE80,#00D4FF);">ธ</div>
+          <div>
+            <div class="author-name">ธนภัทร ลิ้มประเสริฐ</div>
+            <div class="author-role">Freelance Designer</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="wrap">
+    <div class="cta-wrap">
+      <div class="sec-label" style="text-align:center;">เริ่มต้นวันนี้</div>
+      <h2>พร้อมก้าวเข้าสู่<br/><span style="background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">โลกของ AI</span> แล้วหรือยัง?</h2>
+      <p>ลงทะเบียนรับคอร์สฟรีและข่าวสารก่อนใคร ไม่มีสแปม ยกเลิกได้ตลอด</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo-foot">Dew.Tutor</div>
+        <p>แพลตฟอร์มเรียน AI ภาษาไทยที่ครบที่สุด สอนโดยผู้เชี่ยวชาญ AI ตัวจริง</p>
+      </div>
+      <div class="footer-col">
+        <h4>คอร์ส</h4>
+        <ul>
+          <li><a href="#">Prompt Engineering</a></li>
+          <li><a href="#">Claude API</a></li>
+          <li><a href="#">RAG & Vector DB</a></li>
+          <li><a href="#">AI Automation</a></li>
+          <li><a href="#">AI Agent</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>เกี่ยวกับ</h4>
+        <ul>
+          <li><a href="#">เกี่ยวกับ Dew Tutor</a></li>
+          <li><a href="who_am_i/">ผู้สอน</a></li>
+          <li><a href="#">บล็อก AI</a></li>
+          <li><a href="#">Community</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>ติดต่อ</h4>
+        <ul>
+          <li><a href="#">Line: @dewtutor</a></li>
+          <li><a href="#">Facebook Page</a></li>
+          <li><a href="#">YouTube</a></li>
+          <li><a href="#">support@dewtutor.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2025 Dew Tutor. All rights reserved.</span>
+      <span>Made with &#10084; for Thai AI learners</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

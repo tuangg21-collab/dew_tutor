@@ -1,0 +1,1506 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>[ชื่อสินค้า] — [ชื่อแบรนด์]</title>
+  <meta name="description" content="[คำอธิบายสั้นๆ สำหรับ SEO]" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+  <style>
+    /* ================================================
+       RESET & BASE
+    ================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      font-family: 'Prompt', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+
+    /* ================================================
+       CSS VARIABLES — แก้สีได้ที่นี่จุดเดียว
+    ================================================ */
+    :root {
+      /* Colors */
+      --bg:          #0B0614;
+      --bg2:         #130D22;
+      --bg3:         #1C1535;
+      --primary:     #8B5CF6;
+      --primary-d:   #6D28D9;
+      --primary-l:   #C4B5FD;
+      --accent:      #F97316;
+      --accent-l:    #FED7AA;
+      --success:     #10B981;
+      --danger:      #EF4444;
+      --text:        #F1EEFF;
+      --text-muted:  #8B80A8;
+      --border:      rgba(139,92,246,0.15);
+      --border-soft: rgba(255,255,255,0.06);
+
+      /* Gradients */
+      --grad-primary: linear-gradient(135deg, #8B5CF6 0%, #06B6D4 100%);
+      --grad-accent:  linear-gradient(135deg, #F97316 0%, #FBBF24 100%);
+      --grad-hero:    linear-gradient(160deg, #1C0A3D 0%, #0B0614 50%, #0B1A2E 100%);
+
+      /* Spacing */
+      --section-py: 96px;
+      --wrap: 1160px;
+    }
+
+    /* ================================================
+       UTILITIES
+    ================================================ */
+    .wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 24px; }
+    .wrap-sm { max-width: 740px; margin: 0 auto; padding: 0 24px; }
+
+    .sec-label {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2.5px;
+      color: var(--primary-l);
+      margin-bottom: 12px;
+    }
+    .sec-title {
+      font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+      font-weight: 800;
+      line-height: 1.2;
+      letter-spacing: -0.5px;
+      margin-bottom: 14px;
+    }
+    .sec-desc {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 560px;
+      line-height: 1.8;
+    }
+
+    /* Gradient text */
+    .grad-text {
+      background: var(--grad-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .grad-text-accent {
+      background: var(--grad-accent);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      border-radius: 100px;
+      font-family: 'Prompt', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+      border: none;
+      text-decoration: none;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary {
+      background: var(--grad-primary);
+      color: #fff;
+      box-shadow: 0 4px 24px rgba(139,92,246,0.4);
+    }
+    .btn-primary:hover { box-shadow: 0 8px 36px rgba(139,92,246,0.55); }
+    .btn-accent {
+      background: var(--grad-accent);
+      color: #fff;
+      box-shadow: 0 4px 24px rgba(249,115,22,0.4);
+    }
+    .btn-accent:hover { box-shadow: 0 8px 36px rgba(249,115,22,0.55); }
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-outline:hover { border-color: var(--primary); background: rgba(139,92,246,0.08); }
+    .btn-lg { padding: 18px 40px; font-size: 1.1rem; }
+    .btn-sm { padding: 10px 20px; font-size: 0.9rem; }
+
+    /* Divider */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border-soft);
+      margin: 0;
+    }
+
+    /* Placeholder image */
+    .img-placeholder {
+      width: 100%;
+      background: var(--bg3);
+      border: 1px dashed rgba(139,92,246,0.3);
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      text-align: center;
+      padding: 24px;
+    }
+    .img-placeholder i { color: rgba(139,92,246,0.5); }
+
+    /* ================================================
+       SCROLL ANIMATION
+    ================================================ */
+    [data-animate] {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    [data-animate="fade"] { transform: none; }
+    [data-animate="left"] { transform: translateX(-28px); }
+    [data-animate="right"] { transform: translateX(28px); }
+    [data-animate].is-visible {
+      opacity: 1;
+      transform: none;
+    }
+    [data-delay="1"] { transition-delay: 0.1s; }
+    [data-delay="2"] { transition-delay: 0.2s; }
+    [data-delay="3"] { transition-delay: 0.3s; }
+    [data-delay="4"] { transition-delay: 0.4s; }
+    [data-delay="5"] { transition-delay: 0.5s; }
+
+    /* ================================================
+       STICKY NAV
+    ================================================ */
+    #nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      padding: 14px 0;
+      background: rgba(11,6,20,0.8);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-soft);
+      transition: padding 0.3s;
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 800;
+      background: var(--grad-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .nav-right { display: flex; align-items: center; gap: 16px; }
+    .nav-price {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* ================================================
+       SECTION 1: HERO
+    ================================================ */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 120px 0 80px;
+      background: var(--grad-hero);
+      position: relative;
+      overflow: hidden;
+    }
+    /* Background grid */
+    #hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(139,92,246,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(139,92,246,0.05) 1px, transparent 1px);
+      background-size: 56px 56px;
+    }
+    /* Glow */
+    #hero::after {
+      content: '';
+      position: absolute;
+      top: 20%; left: 50%;
+      transform: translateX(-50%);
+      width: 700px; height: 400px;
+      background: radial-gradient(ellipse, rgba(139,92,246,0.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(139,92,246,0.12);
+      border: 1px solid rgba(139,92,246,0.3);
+      padding: 6px 16px;
+      border-radius: 100px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--primary-l);
+      margin-bottom: 20px;
+    }
+    .live-dot {
+      width: 7px; height: 7px;
+      background: var(--success);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--success);
+      animation: livepulse 2s infinite;
+    }
+    @keyframes livepulse {
+      0%,100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+    .hero-headline {
+      font-size: clamp(2rem, 4.5vw, 3.5rem);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -1px;
+      margin-bottom: 18px;
+    }
+    .hero-sub {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      line-height: 1.8;
+      margin-bottom: 32px;
+      max-width: 500px;
+    }
+    .hero-cta-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .hero-note {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    /* Hero image */
+    .hero-img-wrap {
+      position: relative;
+    }
+    .hero-img-placeholder {
+      height: 440px;
+    }
+    /* Social proof bar */
+    .hero-proof {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      margin-top: 56px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border-soft);
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 1;
+    }
+    .proof-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+    .proof-num {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--text);
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    /* ================================================
+       SECTION 2: PROBLEM
+    ================================================ */
+    #problem {
+      padding: var(--section-py) 0;
+      background: var(--bg2);
+    }
+    .problem-header { text-align: center; margin-bottom: 56px; }
+    .problem-header .sec-desc { margin: 0 auto; }
+    .pain-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
+      margin-bottom: 56px;
+    }
+    .pain-card {
+      background: rgba(239,68,68,0.04);
+      border: 1px solid rgba(239,68,68,0.15);
+      border-radius: 16px;
+      padding: 24px;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .pain-card:hover { border-color: rgba(239,68,68,0.35); transform: translateY(-4px); }
+    .pain-icon {
+      width: 44px; height: 44px;
+      background: rgba(239,68,68,0.1);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #EF4444;
+      margin-bottom: 14px;
+      flex-shrink: 0;
+    }
+    .pain-title { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .pain-desc { font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; }
+    .problem-close {
+      text-align: center;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .problem-close p {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 24px;
+      line-height: 1.7;
+    }
+
+    /* ================================================
+       SECTION 3: FIT
+    ================================================ */
+    #fit {
+      padding: var(--section-py) 0;
+      background: var(--bg);
+    }
+    .fit-header { text-align: center; margin-bottom: 56px; }
+    .fit-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+    }
+    .fit-box {
+      border-radius: 20px;
+      padding: 32px;
+    }
+    .fit-yes {
+      background: rgba(16,185,129,0.06);
+      border: 1px solid rgba(16,185,129,0.2);
+    }
+    .fit-no {
+      background: rgba(239,68,68,0.04);
+      border: 1px solid rgba(239,68,68,0.15);
+    }
+    .fit-box-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+    .fit-yes .fit-box-title { color: var(--success); }
+    .fit-no .fit-box-title { color: var(--danger); }
+    .fit-list { list-style: none; display: flex; flex-direction: column; gap: 13px; }
+    .fit-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.92rem;
+      color: var(--text);
+      line-height: 1.5;
+    }
+    .fit-item-icon { flex-shrink: 0; margin-top: 2px; }
+    .fit-yes .fit-item-icon { color: var(--success); }
+    .fit-no .fit-item-icon { color: var(--danger); }
+
+    /* ================================================
+       SECTION 4: FLOW
+    ================================================ */
+    #flow {
+      padding: var(--section-py) 0;
+      background: var(--bg2);
+    }
+    .flow-header { text-align: center; margin-bottom: 64px; }
+    .flow-header .sec-desc { margin: 0 auto; }
+    .flow-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 24px;
+      position: relative;
+    }
+    /* connecting line */
+    .flow-steps::before {
+      content: '';
+      position: absolute;
+      top: 36px;
+      left: 10%;
+      right: 10%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--primary), transparent);
+      pointer-events: none;
+    }
+    .flow-card {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 28px 22px;
+      text-align: center;
+      transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+      position: relative;
+    }
+    .flow-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-6px);
+      box-shadow: 0 12px 40px rgba(139,92,246,0.15);
+    }
+    .flow-num {
+      width: 48px; height: 48px;
+      background: var(--grad-primary);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: #fff;
+      margin: 0 auto 16px;
+      box-shadow: 0 6px 20px rgba(139,92,246,0.35);
+    }
+    .flow-icon {
+      width: 48px; height: 48px;
+      background: rgba(139,92,246,0.12);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      color: var(--primary-l);
+    }
+    .flow-title { font-size: 0.98rem; font-weight: 700; margin-bottom: 8px; }
+    .flow-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; }
+
+    /* ================================================
+       SECTION 5: CREDIT — Testimonials + Author
+    ================================================ */
+    #credit {
+      padding: var(--section-py) 0;
+      background: var(--bg);
+    }
+    .credit-header { text-align: center; margin-bottom: 56px; }
+    .testi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 22px;
+      margin-bottom: 72px;
+    }
+    .testi-card {
+      background: var(--bg2);
+      border: 1px solid var(--border-soft);
+      border-radius: 20px;
+      padding: 26px;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .testi-card:hover { border-color: var(--primary); transform: translateY(-4px); }
+    .testi-stars {
+      display: flex;
+      gap: 3px;
+      color: #FBBF24;
+      margin-bottom: 14px;
+    }
+    .testi-quote {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      line-height: 1.75;
+      margin-bottom: 20px;
+      font-style: italic;
+    }
+    .testi-author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .testi-avatar {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: var(--bg3);
+      border: 1px dashed rgba(139,92,246,0.3);
+      overflow: hidden;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+    }
+    .testi-name { font-weight: 700; font-size: 0.9rem; }
+    .testi-role { font-size: 0.78rem; color: var(--text-muted); }
+
+    /* Author section */
+    .author-section {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 48px;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+    .author-photo {
+      width: 180px; height: 180px;
+      border-radius: 20px;
+      flex-shrink: 0;
+    }
+    .author-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--primary-l); margin-bottom: 8px; }
+    .author-name { font-size: 1.7rem; font-weight: 800; margin-bottom: 6px; }
+    .author-role { color: var(--primary-l); font-weight: 600; margin-bottom: 16px; font-size: 0.95rem; }
+    .author-bio { color: var(--text-muted); line-height: 1.8; font-size: 0.95rem; margin-bottom: 20px; }
+    .author-creds { display: flex; flex-wrap: wrap; gap: 9px; }
+    .cred-chip {
+      background: var(--bg3);
+      border: 1px solid var(--border-soft);
+      border-radius: 100px;
+      padding: 5px 14px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .cred-chip i { color: var(--primary-l); }
+
+    /* ================================================
+       SECTION 6: FAQ
+    ================================================ */
+    #faq {
+      padding: var(--section-py) 0;
+      background: var(--bg2);
+    }
+    .faq-header { text-align: center; margin-bottom: 56px; }
+    .faq-list { display: flex; flex-direction: column; gap: 12px; }
+    .faq-item {
+      background: var(--bg3);
+      border: 1px solid var(--border-soft);
+      border-radius: 14px;
+      overflow: hidden;
+      transition: border-color 0.3s;
+    }
+    .faq-item.open { border-color: var(--primary); }
+    .faq-q {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 20px 24px;
+      cursor: pointer;
+      font-size: 0.98rem;
+      font-weight: 600;
+      color: var(--text);
+      user-select: none;
+      transition: color 0.2s;
+    }
+    .faq-item.open .faq-q { color: var(--primary-l); }
+    .faq-arrow {
+      flex-shrink: 0;
+      color: var(--text-muted);
+      transition: transform 0.3s;
+    }
+    .faq-item.open .faq-arrow { transform: rotate(180deg); color: var(--primary-l); }
+    .faq-a {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.3s ease;
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      line-height: 1.8;
+      padding: 0 24px;
+    }
+    .faq-item.open .faq-a {
+      max-height: 400px;
+      padding: 0 24px 20px;
+    }
+
+    /* ================================================
+       SECTION 7: OFFER / PRICING
+    ================================================ */
+    #offer {
+      padding: var(--section-py) 0;
+      background: var(--bg);
+    }
+    .offer-header { text-align: center; margin-bottom: 56px; }
+    .pricing-wrap {
+      display: flex;
+      justify-content: center;
+      gap: 28px;
+      flex-wrap: wrap;
+      align-items: flex-start;
+    }
+    .pricing-card {
+      background: var(--bg2);
+      border: 2px solid var(--primary);
+      border-radius: 24px;
+      padding: 40px;
+      width: 100%;
+      max-width: 460px;
+      position: relative;
+      box-shadow: 0 0 48px rgba(139,92,246,0.2);
+    }
+    .pricing-badge {
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--grad-accent);
+      color: #fff;
+      font-size: 0.78rem;
+      font-weight: 800;
+      padding: 5px 18px;
+      border-radius: 100px;
+      white-space: nowrap;
+      letter-spacing: 0.5px;
+    }
+    .pricing-name {
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--primary-l);
+      margin-bottom: 10px;
+    }
+    .pricing-price {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 3.2rem;
+      font-weight: 800;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .pricing-price sup {
+      font-size: 1.4rem;
+      vertical-align: top;
+      margin-top: 8px;
+    }
+    .pricing-original {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      text-decoration: line-through;
+      margin-bottom: 6px;
+    }
+    .pricing-save {
+      display: inline-block;
+      background: rgba(249,115,22,0.15);
+      color: var(--accent);
+      border: 1px solid rgba(249,115,22,0.25);
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 3px 12px;
+      border-radius: 100px;
+      margin-bottom: 28px;
+    }
+    .pricing-divider { border: none; border-top: 1px solid var(--border-soft); margin: 24px 0; }
+    .pricing-includes {
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+    .pricing-items { list-style: none; display: flex; flex-direction: column; gap: 11px; margin-bottom: 32px; }
+    .pricing-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.93rem;
+      color: var(--text);
+    }
+    .pricing-item i { color: var(--success); flex-shrink: 0; margin-top: 2px; }
+    .pricing-item .item-bonus { color: var(--accent-l); }
+    .pricing-cta { width: 100%; justify-content: center; font-size: 1.05rem; }
+    .pricing-guarantee {
+      text-align: center;
+      margin-top: 16px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    /* ================================================
+       SECTION 8: FINAL CTA
+    ================================================ */
+    #final-cta {
+      padding: var(--section-py) 0;
+      background: linear-gradient(160deg, #1A0A3D 0%, var(--bg) 100%);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    #final-cta::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 800px; height: 400px;
+      background: radial-gradient(ellipse, rgba(139,92,246,0.2) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .final-cta-inner { position: relative; z-index: 1; }
+    .final-cta-inner .sec-title {
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      margin-bottom: 18px;
+    }
+    .final-cta-inner .sec-desc {
+      margin: 0 auto 36px;
+      font-size: 1.05rem;
+    }
+    .final-cta-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .final-note {
+      margin-top: 20px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    /* ================================================
+       FOOTER
+    ================================================ */
+    footer {
+      background: #060310;
+      border-top: 1px solid var(--border-soft);
+      padding: 36px 0;
+    }
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .footer-logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 800;
+      background: var(--grad-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .footer-copy { font-size: 0.82rem; color: var(--text-muted); }
+    .footer-links { display: flex; gap: 20px; }
+    .footer-links a { font-size: 0.82rem; color: var(--text-muted); transition: color 0.2s; }
+    .footer-links a:hover { color: var(--text); }
+
+    /* ================================================
+       RESPONSIVE
+    ================================================ */
+    @media (max-width: 900px) {
+      :root { --section-py: 72px; }
+
+      .hero-inner {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+      .hero-img-wrap { display: none; }
+      .hero-cta-row { justify-content: center; }
+      .hero-sub { margin: 0 auto 32px; }
+      .hero-badge { display: inline-flex; }
+      .hero-proof { justify-content: center; }
+
+      .fit-grid { grid-template-columns: 1fr; }
+
+      .author-section {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+      .author-photo { margin: 0 auto; }
+      .author-creds { justify-content: center; }
+
+      .flow-steps::before { display: none; }
+    }
+
+    @media (max-width: 600px) {
+      .nav-price { display: none; }
+      .pain-grid { grid-template-columns: 1fr; }
+      .author-section { padding: 28px 20px; }
+      .pricing-card { padding: 28px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ================================================
+     STICKY NAV
+================================================ -->
+<nav id="nav">
+  <div class="wrap nav-inner">
+    <div class="nav-logo">[ชื่อแบรนด์]</div>
+    <div class="nav-right">
+      <span class="nav-price">฿[ราคา]</span>
+      <!-- ปุ่ม CTA ใส่ link จริงทีหลัง -->
+      <!-- <a href="#offer" class="btn btn-accent btn-sm">สั่งซื้อเลย</a> -->
+    </div>
+  </div>
+</nav>
+
+
+<!-- ================================================
+     SECTION 1: HERO
+================================================ -->
+<section id="hero">
+  <div class="wrap">
+    <div class="hero-inner">
+
+      <!-- Left: Text -->
+      <div class="hero-content">
+        <div class="hero-badge" data-animate="fade">
+          <span class="live-dot"></span>
+          [ชื่อแบรนด์] &bull; [ชื่อสินค้า]
+        </div>
+
+        <h1 class="hero-headline" data-animate data-delay="1">
+          <!-- ✏️ แก้ Headline ที่นี่ -->
+          สร้าง<span class="grad-text">โรงงานผลิตวิดีโอ</span><br/>
+          ด้วย AI ที่ทำงาน<br/>
+          <span class="grad-text-accent">แทนคุณได้</span>
+        </h1>
+
+        <p class="hero-sub" data-animate data-delay="2">
+          <!-- ✏️ แก้ Sub-headline ที่นี่ -->
+          ไม่ต้องจ้างทีม ไม่ต้องถ่ายเอง<br/>
+          แค่กดปุ่ม ระบบทำให้เอง ตั้งแต่ script ถึง publish
+        </p>
+
+        <div class="hero-cta-row" data-animate data-delay="3">
+          <!-- ✏️ เปลี่ยน href เป็น link จริง -->
+          <!-- <a href="#" class="btn btn-accent btn-lg">
+            [ข้อความปุ่ม CTA]
+            <i data-lucide="arrow-right" width="18" height="18"></i>
+          </a> -->
+          <div class="hero-note">
+            <i data-lucide="shield-check" width="15" height="15"></i>
+            [การันตี / หมายเหตุ เช่น รับประกัน 7 วัน]
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Hero Image -->
+      <div class="hero-img-wrap" data-animate="right" data-delay="2">
+        <div class="img-placeholder hero-img-placeholder">
+          <i data-lucide="image" width="40" height="40"></i>
+          <span>Hero Image<br/><strong>/img/hero.jpg</strong></span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Social Proof Bar -->
+    <div class="hero-proof" data-animate="fade" data-delay="4">
+      <div class="proof-item">
+        <div>
+          <div class="proof-num">[0,000]+</div>
+          <div style="font-size:0.78rem;color:var(--text-muted);">[หน่วย เช่น ลูกค้า]</div>
+        </div>
+      </div>
+      <div class="proof-item">
+        <div>
+          <div class="proof-num">[0.0]<span style="font-size:1rem;">★</span></div>
+          <div style="font-size:0.78rem;color:var(--text-muted);">คะแนนเฉลี่ย</div>
+        </div>
+      </div>
+      <div class="proof-item">
+        <i data-lucide="award" width="20" height="20" style="color:var(--primary-l);"></i>
+        <span>[Credential สั้นๆ เช่น ผู้เชี่ยวชาญ AI 8+ ปี]</span>
+      </div>
+      <div class="proof-item">
+        <i data-lucide="clock" width="20" height="20" style="color:var(--primary-l);"></i>
+        <span>[ข้อมูลเพิ่ม เช่น อัพเดตตลอดชีพ]</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ================================================
+     SECTION 2: PROBLEM
+================================================ -->
+<section id="problem">
+  <div class="wrap">
+    <div class="problem-header">
+      <span class="sec-label" data-animate="fade">ปัญหาที่คุณเจอ</span>
+      <h2 class="sec-title" data-animate data-delay="1">
+        <!-- ✏️ แก้ Headline -->
+        ทำไมคนที่อยาก<span class="grad-text">ใช้ AI ทำวิดีโอ</span><br/>
+        ส่วนใหญ่ยังทำไม่ได้สักที?
+      </h2>
+      <p class="sec-desc" data-animate data-delay="2">
+        <!-- ✏️ แก้คำอธิบาย -->
+        ไม่ใช่เพราะคุณไม่เก่ง แต่เพราะยังไม่มีใครบอกวิธีที่ถูกต้อง
+      </p>
+    </div>
+
+    <div class="pain-grid">
+      <!-- ✏️ แก้ Pain Points ทั้ง 4 ข้อ -->
+      <div class="pain-card" data-animate data-delay="1">
+        <div class="pain-icon"><i data-lucide="x-circle" width="22" height="22"></i></div>
+        <div class="pain-title">พลาดที่ 1: [ชื่อปัญหา]</div>
+        <div class="pain-desc">[อธิบายปัญหา 1-2 ประโยค ทำให้ผู้อ่านรู้สึกว่านี่คือตัวเอง]</div>
+      </div>
+      <div class="pain-card" data-animate data-delay="2">
+        <div class="pain-icon"><i data-lucide="x-circle" width="22" height="22"></i></div>
+        <div class="pain-title">พลาดที่ 2: [ชื่อปัญหา]</div>
+        <div class="pain-desc">[อธิบายปัญหา 1-2 ประโยค]</div>
+      </div>
+      <div class="pain-card" data-animate data-delay="3">
+        <div class="pain-icon"><i data-lucide="x-circle" width="22" height="22"></i></div>
+        <div class="pain-title">พลาดที่ 3: [ชื่อปัญหา]</div>
+        <div class="pain-desc">[อธิบายปัญหา 1-2 ประโยค]</div>
+      </div>
+      <div class="pain-card" data-animate data-delay="4">
+        <div class="pain-icon"><i data-lucide="x-circle" width="22" height="22"></i></div>
+        <div class="pain-title">พลาดที่ 4: [ชื่อปัญหา]</div>
+        <div class="pain-desc">[อธิบายปัญหา 1-2 ประโยค]</div>
+      </div>
+    </div>
+
+    <div class="problem-close" data-animate>
+      <p>
+        <!-- ✏️ แก้ประโยคปิด problem section -->
+        "ปัญหาไม่ใช่ว่าคุณไม่ขยัน<br/>
+        แต่เพราะ<span class="grad-text">ยังไม่มีระบบที่ถูกต้อง</span>"
+      </p>
+      <!-- ปุ่ม CTA ใส่ link จริงทีหลัง -->
+      <!-- <a href="#" class="btn btn-primary">[ข้อความปุ่ม] <i data-lucide="arrow-right" width="16" height="16"></i></a> -->
+    </div>
+  </div>
+</section>
+
+
+<!-- ================================================
+     SECTION 3: FIT — เหมาะกับใคร
+================================================ -->
+<section id="fit">
+  <div class="wrap">
+    <div class="fit-header">
+      <span class="sec-label" data-animate="fade">เหมาะกับใคร?</span>
+      <h2 class="sec-title" data-animate data-delay="1">
+        <!-- ✏️ แก้ Headline -->
+        [ชื่อสินค้า] ทำมาเพื่อ<span class="grad-text">คนแบบนี้</span>
+      </h2>
+    </div>
+
+    <div class="fit-grid">
+      <!-- เหมาะกับ -->
+      <div class="fit-box fit-yes" data-animate="left">
+        <div class="fit-box-title">
+          <i data-lucide="check-circle-2" width="22" height="22"></i>
+          เหมาะกับคุณ ถ้า...
+        </div>
+        <ul class="fit-list">
+          <!-- ✏️ แก้กลุ่มเป้าหมาย 4 กลุ่ม -->
+          <li class="fit-item">
+            <i data-lucide="check" class="fit-item-icon" width="16" height="16"></i>
+            [กลุ่ม 1 — เช่น นักการตลาดที่ต้องการสร้าง Content สม่ำเสมอ]
+          </li>
+          <li class="fit-item">
+            <i data-lucide="check" class="fit-item-icon" width="16" height="16"></i>
+            [กลุ่ม 2 — เช่น ผู้ประกอบการที่อยากขยายธุรกิจด้วย AI]
+          </li>
+          <li class="fit-item">
+            <i data-lucide="check" class="fit-item-icon" width="16" height="16"></i>
+            [กลุ่ม 3 — เช่น Freelancer ที่ต้องการเพิ่มรายได้]
+          </li>
+          <li class="fit-item">
+            <i data-lucide="check" class="fit-item-icon" width="16" height="16"></i>
+            [กลุ่ม 4 — เช่น ทีมงานที่ต้องการ Automate งาน Content]
+          </li>
+        </ul>
+      </div>
+
+      <!-- ไม่เหมาะกับ -->
+      <div class="fit-box fit-no" data-animate="right">
+        <div class="fit-box-title">
+          <i data-lucide="x-circle" width="22" height="22"></i>
+          อาจไม่ใช่สำหรับคุณ ถ้า...
+        </div>
+        <ul class="fit-list">
+          <!-- ✏️ แก้กลุ่มที่ไม่เหมาะ -->
+          <li class="fit-item">
+            <i data-lucide="x" class="fit-item-icon" width="16" height="16"></i>
+            [ไม่เหมาะ 1 — เช่น แค่อยากรู้จัก AI Tools เฉยๆ ไม่ได้ต้องการสร้างระบบจริงจัง]
+          </li>
+          <li class="fit-item">
+            <i data-lucide="x" class="fit-item-icon" width="16" height="16"></i>
+            [ไม่เหมาะ 2 — เช่น กำลังหาทางรวยเร็วโดยไม่ลงมือทำ]
+          </li>
+          <li class="fit-item">
+            <i data-lucide="x" class="fit-item-icon" width="16" height="16"></i>
+            [ไม่เหมาะ 3 — เช่น ไม่พร้อมที่จะลงทุนเวลาสัก 2-3 ชั่วโมง]
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ================================================
+     SECTION 4: FLOW — สิ่งที่จะได้รับ
+================================================ -->
+<section id="flow">
+  <div class="wrap">
+    <div class="flow-header">
+      <span class="sec-label" data-animate="fade">สิ่งที่จะได้รับ</span>
+      <h2 class="sec-title" data-animate data-delay="1">
+        <!-- ✏️ แก้ Headline -->
+        <span class="grad-text">ทุกอย่าง</span>ที่คุณจะได้เรียนรู้
+      </h2>
+      <p class="sec-desc" data-animate data-delay="2">
+        <!-- ✏️ แก้คำอธิบาย -->
+        Step-by-step ตั้งแต่ต้นจนปล่อยระบบทำงานได้จริง
+      </p>
+    </div>
+
+    <div class="flow-steps">
+      <!-- ✏️ แก้/เพิ่ม Step Cards ตามสิ่งที่ลูกค้าจะได้รับ -->
+      <div class="flow-card" data-animate data-delay="1">
+        <div class="flow-num">01</div>
+        <div class="flow-title">[ชื่อ Step 1]</div>
+        <div class="flow-desc">[อธิบาย 1-2 ประโยค สิ่งที่จะได้เรียนใน step นี้]</div>
+      </div>
+      <div class="flow-card" data-animate data-delay="2">
+        <div class="flow-num">02</div>
+        <div class="flow-title">[ชื่อ Step 2]</div>
+        <div class="flow-desc">[อธิบาย 1-2 ประโยค]</div>
+      </div>
+      <div class="flow-card" data-animate data-delay="3">
+        <div class="flow-num">03</div>
+        <div class="flow-title">[ชื่อ Step 3]</div>
+        <div class="flow-desc">[อธิบาย 1-2 ประโยค]</div>
+      </div>
+      <div class="flow-card" data-animate data-delay="4">
+        <div class="flow-num">04</div>
+        <div class="flow-title">[ชื่อ Step 4]</div>
+        <div class="flow-desc">[อธิบาย 1-2 ประโยค]</div>
+      </div>
+      <div class="flow-card" data-animate data-delay="5">
+        <div class="flow-num">05</div>
+        <div class="flow-title">[ชื่อ Step 5]</div>
+        <div class="flow-desc">[อธิบาย 1-2 ประโยค]</div>
+      </div>
+      <!-- เพิ่ม .flow-card ได้ตามต้องการ -->
+    </div>
+  </div>
+</section>
+
+
+<!-- ================================================
+     SECTION 5: CREDIT — Testimonial + Author
+================================================ -->
+<section id="credit">
+  <div class="wrap">
+    <div class="credit-header">
+      <span class="sec-label" data-animate="fade">รีวิวจากผู้ใช้จริง</span>
+      <h2 class="sec-title" data-animate data-delay="1">
+        <!-- ✏️ แก้ Headline -->
+        ลูกค้าที่<span class="grad-text">ใช้งานจริง</span>พูดว่าอะไร?
+      </h2>
+    </div>
+
+    <!-- Testimonials -->
+    <div class="testi-grid">
+      <!-- ✏️ แก้/เพิ่ม Testimonial Cards -->
+      <div class="testi-card" data-animate data-delay="1">
+        <div class="testi-stars">
+          <i data-lucide="star" width="14" height="14" style="fill:#FBBF24;"></i>
+          <i data-lucide="star" width="14" height="14" style="fill:#FBBF24;"></i>
+          <i data-lucide="star" width="14" height="14" style="fill:#FBBF24;"></i>
+          <i data-lucide="star" width="14" height="14" style="fill:#FBBF24;"></i>
+          <i data-lucide="star" width="14" height="14" style="fill:#FBBF24;"></i>
+        </div>
+        <p class="testi-quote">"[คำพูด Testimonial 1 — เล่าผลลัพธ์ที่ได้จริง ให้ชัดเจน น่าเชื่อถือ]"</p>
+        <div class="testi-author">
+          <div class="testi-avatar">
+            <!-- แทนที่ด้วย <img src="../img/review1.jpg" alt=""> -->
+            <i data-lucide="user" width="20" height="20"></i>
+          </div>
+          <div>
+            <div class="testi-name">[ชื่อลูกค้า 1]</div>
+            <div class="testi-role">[ตำแหน่ง / อาชีพ]</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-card" data-animate data-delay="2">
+        <div class="testi-stars">
+          <i data-lucide="star" width="14" height="14" style="fill:#FBBF24;"></i>
+          <i data-lucide="star" width="14" height="14" style="fill:#FBBF24;"></i>
+          <i data-lucide="star" width="14" height="14" style="fill:#FBBF24;"></i>
+          <i data-lucide="star" width="14" height="14" style="fill:#FBBF24;"></i>
+          <i data-lucide="star" width="14" height="14" style="fill:#FBBF24;"></i>
+        </div>
+        <p class="testi-quote">"[คำพูด Testimonial 2]"</p>
+        <div class="testi-author">
+          <div class="testi-avatar">
+            <i data-lucide="user" width="20" height="20"></i>
+          </div>
+          <div>
+            <div class="testi-name">[ชื่อลูกค้า 2]</div>
+            <div class="testi-role">[ตำแหน่ง / อาชีพ]</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-card" data-animate data-delay="3">
+        <div class="testi-stars">
+          <i data-lucide="star" width="14" height="14" style="fill:#FBBF24;"></i>
+          <i data-lucide="star" width="14" height="14" style="fill:#FBBF24;"></i>
+          <i data-lucide="star" width="14" height="14" style="fill:#FBBF24;"></i>
+          <i data-lucide="star" width="14" height="14" style="fill:#FBBF24;"></i>
+          <i data-lucide="star" width="14" height="14" style="fill:#FBBF24;"></i>
+        </div>
+        <p class="testi-quote">"[คำพูด Testimonial 3]"</p>
+        <div class="testi-author">
+          <div class="testi-avatar">
+            <i data-lucide="user" width="20" height="20"></i>
+          </div>
+          <div>
+            <div class="testi-name">[ชื่อลูกค้า 3]</div>
+            <div class="testi-role">[ตำแหน่ง / อาชีพ]</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Author Bio -->
+    <div class="author-section" data-animate>
+      <div class="author-photo img-placeholder" style="min-height:180px;min-width:180px;max-width:180px;">
+        <!-- แทนที่ด้วย <img src="../img/author.jpg" alt="ชื่อผู้สอน" style="border-radius:20px;object-fit:cover;width:180px;height:180px;"> -->
+        <i data-lucide="camera" width="28" height="28"></i>
+        <span style="font-size:0.75rem;">/img/author.jpg</span>
+      </div>
+      <div>
+        <div class="author-label">ผู้สร้าง</div>
+        <h3 class="author-name">[ชื่อผู้สร้าง]</h3>
+        <div class="author-role">[ตำแหน่ง / บทบาท เช่น AI Educator & Consultant]</div>
+        <p class="author-bio">
+          <!-- ✏️ แก้ Bio ผู้สร้าง -->
+          [เขียน Bio 3-4 ประโยค เน้น Credential ที่เกี่ยวข้องกับสินค้า
+          บอกว่าทำไมถึงมีความน่าเชื่อถือ มีประสบการณ์ผ่านมาอะไร
+          และทำไมถึงสร้างสิ่งนี้ขึ้นมา]
+        </p>
+        <div class="author-creds">
+          <!-- ✏️ แก้ Credential chips -->
+          <span class="cred-chip"><i data-lucide="briefcase" width="13" height="13"></i>[Credential 1]</span>
+          <span class="cred-chip"><i data-lucide="users" width="13" height="13"></i>[Credential 2]</span>
+          <span class="cred-chip"><i data-lucide="award" width="13" height="13"></i>[Credential 3]</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ================================================
+     SECTION 6: FAQ
+================================================ -->
+<section id="faq">
+  <div class="wrap-sm">
+    <div class="faq-header">
+      <span class="sec-label" data-animate="fade">FAQ</span>
+      <h2 class="sec-title" data-animate data-delay="1">
+        คำถามที่<span class="grad-text">คนถามบ่อย</span>
+      </h2>
+    </div>
+
+    <div class="faq-list" data-animate>
+      <!-- ✏️ แก้/เพิ่ม Q&A ได้ตามต้องการ -->
+
+      <div class="faq-item">
+        <div class="faq-q">
+          <span>[คำถาม 1 — เช่น ต้องมีพื้นฐาน AI มาก่อนไหม?]</span>
+          <i data-lucide="chevron-down" class="faq-arrow" width="18" height="18"></i>
+        </div>
+        <div class="faq-a">
+          [คำตอบ 1 — ตอบให้ครบ ชัดเจน และลดความกังวลของผู้ซื้อ]
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          <span>[คำถาม 2 — เช่น ซื้อแล้วใช้ได้นานแค่ไหน?]</span>
+          <i data-lucide="chevron-down" class="faq-arrow" width="18" height="18"></i>
+        </div>
+        <div class="faq-a">
+          [คำตอบ 2]
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          <span>[คำถาม 3 — เช่น มีการ refund ไหม?]</span>
+          <i data-lucide="chevron-down" class="faq-arrow" width="18" height="18"></i>
+        </div>
+        <div class="faq-a">
+          [คำตอบ 3]
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          <span>[คำถาม 4 — เช่น เข้าถึงได้ผ่านอุปกรณ์อะไร?]</span>
+          <i data-lucide="chevron-down" class="faq-arrow" width="18" height="18"></i>
+        </div>
+        <div class="faq-a">
+          [คำตอบ 4]
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          <span>[คำถาม 5 — เช่น มีการ support หลังซื้อไหม?]</span>
+          <i data-lucide="chevron-down" class="faq-arrow" width="18" height="18"></i>
+        </div>
+        <div class="faq-a">
+          [คำตอบ 5]
+        </div>
+      </div>
+
+      <!-- เพิ่ม .faq-item ได้ตามต้องการ -->
+    </div>
+  </div>
+</section>
+
+
+<!-- ================================================
+     SECTION 7: OFFER / PRICING
+================================================ -->
+<section id="offer">
+  <div class="wrap">
+    <div class="offer-header">
+      <span class="sec-label" data-animate="fade">ราคา</span>
+      <h2 class="sec-title" data-animate data-delay="1">
+        <!-- ✏️ แก้ Headline -->
+        เลือก<span class="grad-text">แบบที่ใช่</span>สำหรับคุณ
+      </h2>
+    </div>
+
+    <div class="pricing-wrap">
+      <div class="pricing-card" data-animate>
+        <div class="pricing-badge">
+          <!-- ✏️ แก้ badge เช่น "ราคาพิเศษ Limited" หรือลบออกได้ -->
+          ✦ ราคาพิเศษ เฉพาะช่วงนี้
+        </div>
+
+        <div class="pricing-name">[ชื่อ Package — เช่น Full Access]</div>
+
+        <div class="pricing-price">
+          <sup>฿</sup>[ราคา]
+        </div>
+
+        <!-- ✏️ ถ้ามีราคาเดิมใส่ที่นี่ ถ้าไม่มีลบออก -->
+        <div class="pricing-original">ปกติ ฿[ราคาเดิม]</div>
+        <div class="pricing-save">ประหยัด ฿[จำนวนที่ลด]</div>
+
+        <hr class="pricing-divider" />
+
+        <div class="pricing-includes">สิ่งที่ได้รับ</div>
+        <ul class="pricing-items">
+          <!-- ✏️ แก้รายการสิ่งที่ได้รับ -->
+          <li class="pricing-item">
+            <i data-lucide="check-circle-2" width="16" height="16"></i>
+            [สิ่งที่ได้ 1]
+          </li>
+          <li class="pricing-item">
+            <i data-lucide="check-circle-2" width="16" height="16"></i>
+            [สิ่งที่ได้ 2]
+          </li>
+          <li class="pricing-item">
+            <i data-lucide="check-circle-2" width="16" height="16"></i>
+            [สิ่งที่ได้ 3]
+          </li>
+          <li class="pricing-item">
+            <i data-lucide="check-circle-2" width="16" height="16"></i>
+            [สิ่งที่ได้ 4]
+          </li>
+          <!-- Bonus items -->
+          <li class="pricing-item">
+            <i data-lucide="gift" width="16" height="16" style="color:var(--accent);"></i>
+            <span class="item-bonus">BONUS: [ของแถม 1]</span>
+          </li>
+          <li class="pricing-item">
+            <i data-lucide="gift" width="16" height="16" style="color:var(--accent);"></i>
+            <span class="item-bonus">BONUS: [ของแถม 2]</span>
+          </li>
+        </ul>
+
+        <!-- ✏️ ใส่ link จริงใน href -->
+        <!-- <a href="#" class="btn btn-accent btn-lg pricing-cta">
+          [ข้อความปุ่ม เช่น สั่งซื้อเลย]
+          <i data-lucide="arrow-right" width="18" height="18"></i>
+        </a> -->
+
+        <div class="pricing-guarantee">
+          <i data-lucide="shield-check" width="15" height="15"></i>
+          [การันตี เช่น รับประกันคืนเงิน 7 วัน ถ้าไม่พอใจ]
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ================================================
+     SECTION 8: FINAL CTA
+================================================ -->
+<section id="final-cta">
+  <div class="wrap">
+    <div class="final-cta-inner wrap-sm">
+      <span class="sec-label" data-animate="fade">ตัดสินใจแล้วหรือยัง?</span>
+      <h2 class="sec-title" data-animate data-delay="1">
+        <!-- ✏️ แก้ Headline ปิดการขาย -->
+        คุณจะยัง<span class="grad-text-accent">ทำแบบเดิม</span><br/>
+        หรือจะสร้าง<span class="grad-text">ระบบที่ทำแทนคุณ?</span>
+      </h2>
+      <p class="sec-desc" data-animate data-delay="2">
+        <!-- ✏️ แก้ Body ปิดการขาย 2-3 ประโยค -->
+        [ประโยคที่ 1 — เชื่อมกับ Pain ที่คุยไปใน section 2]<br/>
+        [ประโยคที่ 2 — บอกว่าสินค้านี้จะเปลี่ยนอะไร]<br/>
+        [ประโยคที่ 3 — สร้าง Urgency หรือ Scarcity ถ้ามี]
+      </p>
+      <div class="final-cta-row" data-animate data-delay="3">
+        <!-- ✏️ ใส่ link จริงใน href -->
+        <!-- <a href="#" class="btn btn-accent btn-lg">
+          [ข้อความปุ่ม CTA]
+          <i data-lucide="arrow-right" width="20" height="20"></i>
+        </a> -->
+      </div>
+      <div class="final-note" data-animate="fade" data-delay="4">
+        <i data-lucide="lock" width="13" height="13"></i>
+        [หมายเหตุ เช่น ชำระเงินปลอดภัย 100% | เข้าถึงได้ทันทีหลังชำระ]
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ================================================
+     FOOTER
+================================================ -->
+<footer>
+  <div class="wrap footer-inner">
+    <div class="footer-logo">[ชื่อแบรนด์]</div>
+    <div class="footer-copy">&copy; 2025 [ชื่อแบรนด์]. All rights reserved.</div>
+    <div class="footer-links">
+      <a href="#">นโยบายความเป็นส่วนตัว</a>
+      <a href="#">ข้อกำหนดการใช้งาน</a>
+      <a href="#">ติดต่อ</a>
+    </div>
+  </div>
+</footer>
+
+
+<!-- ================================================
+     JAVASCRIPT
+================================================ -->
+<script>
+  // Init Lucide Icons
+  lucide.createIcons();
+
+  // ================================================
+  // Scroll Animation — Intersection Observer
+  // ================================================
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        // Unobserve after animation plays once
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('[data-animate]').forEach(el => observer.observe(el));
+
+  // ================================================
+  // FAQ Accordion
+  // ================================================
+  document.querySelectorAll('.faq-q').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.faq-item');
+      const isOpen = item.classList.contains('open');
+
+      // Close all
+      document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+
+      // Toggle clicked
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+
+  // ================================================
+  // Sticky Nav: shrink on scroll
+  // ================================================
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 60) {
+      nav.style.padding = '10px 0';
+    } else {
+      nav.style.padding = '14px 0';
+    }
+  }, { passive: true });
+
+  // ================================================
+  // Smooth scroll for all anchor links
+  // ================================================
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
